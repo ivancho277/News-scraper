@@ -1,4 +1,7 @@
 var express = require("express");
+var axios = require("axios");
+var cheerio = require("cheerio");
+var mongoose = require("mongoose");
 
 // Setting up port and requiring models for syncing
 var PORT = process.env.PORT || 3000;
@@ -18,12 +21,12 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 
 // Requiring our routes
 require("./routes/api-routes.js")(app);
 
 // Syncing our database and logging a message to the user upon success
-
   app.listen(PORT, function () {
     console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
   });
