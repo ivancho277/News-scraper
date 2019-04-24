@@ -1,0 +1,26 @@
+{
+  "name": "news-scraper",
+  "version": "1.0.0",
+  "description": "this is a news scraping page",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivancho277/News-scraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivancho277/News-scraper/issues"
+  },
+  "homepage": "https://github.com/ivancho277/News-scraper#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express-handlebars": "^3.0.2",
+    "expresss": "0.0.0",
+    "mongoose": "^5.5.3"
+  }
+}
