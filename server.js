@@ -36,6 +36,11 @@ app.engine("handlebars", exphbs({
 app.set("view engine", "handlebars");
 
 
+//home get route
+app.get("/", (req, res)=> {
+  res.render("index", {})
+})
+
 // Requiring our routes
 //require("./routes/api-routes.js")(app);
 

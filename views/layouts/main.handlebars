@@ -17,32 +17,33 @@
 <body>
 
 
-    <div class="container">
-        <nav class="justify-content-between navbar navbar-expand-lg">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
 
-                    </li>
-                    {{!-- When logged in this should appear with links to all user posts, etc. --}}
-                    <li class="nav-item dropdown">
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#" id="my-posts">Home</a>
-                            <a class="dropdown-item" href="#" id="my-favs">Saved Articles</a>
-                            <button>Scrape New Articles</button>
-                            <button>Clear Articles</button>
-                        </div>
-                    </li>
-                    {{!-- This should be replaced by the accounts when user is logged in --}}
-                </ul>
+    <nav class="justify-content-between navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
 
-            </div>
+                </li>
+                {{!-- When logged in this should appear with links to all user posts, etc. --}}
+                <li class="nav-item dropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" id="my-posts">Home</a>
+                        <a class="dropdown-item" href="#" id="my-favs">Saved Articles</a>
+                        <button>Scrape New Articles</button>
+                        <button>Clear Articles</button>
+                    </div>
+                </li>
+                {{!-- This should be replaced by the accounts when user is logged in --}}
+            </ul>
+
+        </div>
 
 
 
-        </nav>
-        {{!-- Dynamically generated body element --}}
-        {{{body}}}
+    </nav>
+    <div class="container"></div>
+    {{!-- Dynamically generated body element --}}
+    {{{body}}}
 
     </div>
     <!-- Optional JavaScript -->
