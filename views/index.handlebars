@@ -1,16 +1,7 @@
 <div class="container" id="feed-container">
     <div class="card-columns ">
-        
-
-        {{#each images}}
-
-        {{> feed/posts-block this}}
-        {{/each}}
-
-        {{else}}
-        {{#each images}}
+        {{#each article}}
         {{> feed/feed-block this}}
-
         {{/each}}
         
     </div>

@@ -38,7 +38,9 @@ app.set("view engine", "handlebars");
 
 //home get route
 app.get("/", (req, res)=> {
-  res.render("index", {})
+  db.Article.find({}).then(data => {
+    res.render("index", {article: data})
+  })
 })
 
 // Requiring our routes
