@@ -84,6 +84,7 @@ app.delete("/", (req, res) => {
   }).catch(err => {
     res.json(err)
   })
+})
 
   //TODO:
   //get route for scraping
@@ -143,5 +144,3 @@ app.delete("/", (req, res) => {
   app.listen(PORT, function () {
     console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
   });
-
-})
