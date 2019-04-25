@@ -1,26 +1,26 @@
-TODO:
-    //Post route to save article from reddit to db
+//TODO:
+//Post route to save article from reddit to db
 
-    TODO:
-    //get route to grab article from db and save to users articles
+//TODO:
+//get route to grab article from db and save to users articles
 
-    TODO:
-    //get all from db
-    app.get("/all", (req, res) => {
-        db.scrapedData.find({}, (err, data) => {
-            if (err) throw err
-            else {
-                res.json(data);
-            }
-        })
+// TODO:
+//get all from db
+app.get("/all", (req, res) => {
+    db.scrapedData.find({}, (err, data) => {
+        if (err) throw err
+        else {
+            res.json(data);
+        }
     })
+})
 
-TODO:
-    //Delete route to get rid of article
+//TODO:
+//Delete route to get rid of article
 
-    TODO:
-    //get route for scraping
-    var results = [];
+// TODO:
+//get route for scraping
+var results = [];
 app.get("/scrape", (req, res) => {
     axios.get("https://old.reddit.com/r/javascript/").then(function (response) {
 
