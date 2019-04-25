@@ -14,7 +14,9 @@ var db = require("./models");
 // db.on("error", function(error) {
 //   console.log("Database Error:", error);
 // });
-mongoose.connect("mongodb://localhost/articledb", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/articledb", {
+  useNewUrlParser: true
+});
 
 // Creating express app and configuring middleware needed for authentication
 var app = express();
@@ -37,11 +39,14 @@ app.set("view engine", "handlebars");
 
 
 //home get route
-app.get("/", (req, res)=> {
+app.get("/", (req, res) => {
   db.Article.find({}).then(data => {
-    res.render("index", {article: data})
+    res.render("index", {
+      article: data
+    })
   })
 })
+
 
 // Requiring our routes
 //require("./routes/api-routes.js")(app);
@@ -62,7 +67,7 @@ app.post("/userarticles", (res, req) => {
 //get all from db
 app.get("/all", (req, res) => {
   db.Article.find({}).then((data) => {
-      res.json(data);
+    res.json(data);
   }).catch(err => {
     res.json(err)
   })
@@ -70,14 +75,12 @@ app.get("/all", (req, res) => {
 
 //TODO:
 //Delete route to get rid of article
-app.delete("/clear", (req, res) => {
-  db.Article.remove({}, (err, data) =>{
-    if(err) throw err;
-    else{
-      res.send("cleared")
-    }
-  });
-})
+
+  app.delete("/", (req, res) => {
+    db.Article.deleteMany({}).then((data) => {
+      res.json()
+    });
+  })
 
 //TODO:
 //get route for scraping
@@ -90,7 +93,7 @@ app.get("/scrape", (req, res) => {
     var $ = cheerio.load(response.data);
 
     // An empty array to save the data that we'll scrape
-    
+
 
     // With cheerio, find each p-tag with the "title" class
     // (i: iterator. element: the current element)
@@ -119,7 +122,7 @@ app.get("/scrape", (req, res) => {
   //res.json(collections);
   // Log the results once you've looped through each of the elements found with cheerio
   //console.log(results);
-  res.send("Scrape Complete");
+  setTimeout(() => {res.redirect('/')}, 300);
 });
 //res.json(collections);
 
