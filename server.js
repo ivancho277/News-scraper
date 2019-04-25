@@ -43,7 +43,8 @@ app.get("/", (req, res) => {
   db.Article.find({}).then(data => {
     res.render("index", {
       article: data
-    })
+    }).catch(err => {
+      res.json(err)
   })
 })
 
@@ -79,7 +80,8 @@ app.get("/all", (req, res) => {
   app.delete("/", (req, res) => {
     db.Article.deleteMany({}).then((data) => {
       res.json()
-    });
+    }).catch(err => {
+      res.json(err)
   })
 
 //TODO:
