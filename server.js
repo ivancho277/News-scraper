@@ -14,10 +14,12 @@ var db = require("./models");
 // db.on("error", function(error) {
 //   console.log("Database Error:", error);
 // });
-mongoose.connect("mongodb://localhost/articledb", {
-  useNewUrlParser: true
-});
+// mongoose.connect("mongodb://localhost/articledb", {
+//   useNewUrlParser: true
+// });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
+mongoose.connect(MONGODB_URI);
 // Creating express app and configuring middleware needed for authentication
 var app = express();
 app.use(express.urlencoded({
