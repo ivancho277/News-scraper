@@ -61,8 +61,6 @@ app.post("/userarticles", (res, req) => {
 
 })
 
-
-
 // TODO:
 //get all from db
 app.get("/all", (req, res) => {
@@ -121,9 +119,9 @@ app.get("/scrape", (req, res) => {
       // });
     });
   });
-  setTimeout(() => {
-    res.redirect('/')
-  }, 300);
+  // setTimeout(() => {
+  //   res.redirect('/')
+  // }, 300);
 });
 //res.json(collections);
 
