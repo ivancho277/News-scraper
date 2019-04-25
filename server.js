@@ -5,14 +5,16 @@ var mongoose = require("mongoose");
 var mongojs = require("mongojs")
 
 // Setting up port and requiring models for syncing
+
 var PORT = process.env.PORT || 3000;
-//var db = require("./models/ArticleSchema");
-var databaseUrl = "scraper";
-var collections = ["scrapedData"];
-var db = mongojs(databaseUrl, collections);
-db.on("error", function(error) {
-  console.log("Database Error:", error);
-});
+var db = require("./models");
+//var databaseUrl = "scraper";
+//var collections = ["scrapedData"];
+// var db = mongojs(databaseUrl, collections);
+// db.on("error", function(error) {
+//   console.log("Database Error:", error);
+// });
+mongoose.connect("mongodb://localhost/articledb", { useNewUrlParser: true });
 
 // Creating express app and configuring middleware needed for authentication
 var app = express();
@@ -32,9 +34,7 @@ app.engine("handlebars", exphbs({
   defaultLayout: "main"
 }));
 app.set("view engine", "handlebars");
-mongoose.connect("mongodb://localhost/populate", {
-  useNewUrlParser: true
-});
+
 
 // Requiring our routes
 //require("./routes/api-routes.js")(app);
@@ -49,21 +49,22 @@ app.post("/userarticles", (res, req) => {
 
 })
 
+
+
 // TODO:
 //get all from db
 app.get("/all", (req, res) => {
-  db.scrapedData.find({}, (err, data) => {
-    if (err) throw err
-    else {
+  db.Article.find({}).then((data) => {
       res.json(data);
-    }
+  }).catch(err => {
+    res.json(err)
   })
 })
 
 //TODO:
 //Delete route to get rid of article
 app.delete("/clear", (req, res) => {
-  db.scrapedData.remove({}, (err, data) =>{
+  db.Article.remove({}, (err, data) =>{
     if(err) throw err;
     else{
       res.send("cleared")
@@ -82,7 +83,7 @@ app.get("/scrape", (req, res) => {
     var $ = cheerio.load(response.data);
 
     // An empty array to save the data that we'll scrape
-    var results = [];
+    
 
     // With cheerio, find each p-tag with the "title" class
     // (i: iterator. element: the current element)
@@ -92,16 +93,20 @@ app.get("/scrape", (req, res) => {
       // In the currently selected element, look at its child elements (i.e., its a-tags),
       // then save the values for any "href" attributes that the child elements may have
       var link = $(element).children().attr("href");
-      db.scrapedData.insert({
-        title: title,
-        link: link
+      var result = {};
+      result.title = title;
+      result.link = link;
+      db.Article.create(result).then((dbArticle) => {
+        console.log(dbArticle);
+      }).catch(err => {
+        console.log(err);
       })
 
       // Save these results in an object that we'll push into the results array we defined earlier
-      results.push({
-        title: title,
-        link: link
-      });
+      // results.push({
+      //   title: title,
+      //   link: link
+      // });
     });
   });
   //res.json(collections);
