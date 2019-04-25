@@ -21,7 +21,7 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/populate", { useNewUrlParser: true });
 
 // Requiring our routes
 require("./routes/api-routes.js")(app);
