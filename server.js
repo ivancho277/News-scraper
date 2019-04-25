@@ -2,14 +2,23 @@ var express = require("express");
 var axios = require("axios");
 var cheerio = require("cheerio");
 var mongoose = require("mongoose");
+var mongojs = require("mongojs")
 
 // Setting up port and requiring models for syncing
 var PORT = process.env.PORT || 3000;
-var db = require("./models/ArticleSchema");
+//var db = require("./models/ArticleSchema");
+var databaseUrl = "scraper";
+var collections = ["scrapedData"];
+var db = mongojs(databaseUrl, collections);
+db.on("error", function(error) {
+  console.log("Database Error:", error);
+});
 
 // Creating express app and configuring middleware needed for authentication
 var app = express();
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.json());
 app.use(express.static("public"));
 // We need to use sessions to keep track of our user's login status
@@ -19,66 +28,86 @@ app.use(express.static("public"));
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({
+  defaultLayout: "main"
+}));
 app.set("view engine", "handlebars");
-mongoose.connect("mongodb://localhost/populate", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/populate", {
+  useNewUrlParser: true
+});
 
 // Requiring our routes
 //require("./routes/api-routes.js")(app);
 
 
 //TODO:
-    //Post route to save article from reddit to db
+//Post route to save article from reddit to db
 
-   // TODO:
-    //get route to grab article from db and save to users articles
+// TODO:
+//get route to grab article from db and save to users articles
+app.post("/userarticles", (res, req) => {
 
-   // TODO:
-    //get all from db
-    app.get("/all", (req, res) => {
-        db.scrapedData.find({}, (err, data) => {
-            if (err) throw err
-            else {
-                res.json(data);
-            }
-        })
-    })
+})
+
+// TODO:
+//get all from db
+app.get("/all", (req, res) => {
+  db.scrapedData.find({}, (err, data) => {
+    if (err) throw err
+    else {
+      res.json(data);
+    }
+  })
+})
 
 //TODO:
-    //Delete route to get rid of article
+//Delete route to get rid of article
+app.delete("/clear", (req, res) => {
+  db.scrapedData.remove({}, (err, data) =>{
+    if(err) throw err;
+    else{
+      res.send("cleared")
+    }
+  });
+})
 
-    //TODO:
-    //get route for scraping
-    var results = [];
+//TODO:
+//get route for scraping
+var results = [];
 app.get("/scrape", (req, res) => {
-    axios.get("https://old.reddit.com/r/javascript/").then(function (response) {
+  axios.get("https://old.reddit.com/r/javascript/").then(function (response) {
 
-        // Load the Response into cheerio and save it to a variable
-        // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-        var $ = cheerio.load(response.data);
+    // Load the Response into cheerio and save it to a variable
+    // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
+    var $ = cheerio.load(response.data);
 
-        // An empty array to save the data that we'll scrape
-        var results = [];
+    // An empty array to save the data that we'll scrape
+    var results = [];
 
-        // With cheerio, find each p-tag with the "title" class
-        // (i: iterator. element: the current element)
-        $("p.title").each(function (i, element) {
-            // Save the text of the element in a "title" variable
-            var title = $(element).text();
-            // In the currently selected element, look at its child elements (i.e., its a-tags),
-            // then save the values for any "href" attributes that the child elements may have
-            var link = $(element).children().attr("href");
-            // Save these results in an object that we'll push into the results array we defined earlier
-            results.push({
-                title: title,
-                link: link
-            });
-        });
+    // With cheerio, find each p-tag with the "title" class
+    // (i: iterator. element: the current element)
+    $("p.title").each(function (i, element) {
+      // Save the text of the element in a "title" variable
+      var title = $(element).text();
+      // In the currently selected element, look at its child elements (i.e., its a-tags),
+      // then save the values for any "href" attributes that the child elements may have
+      var link = $(element).children().attr("href");
+      db.scrapedData.insert({
+        title: title,
+        link: link
+      })
+
+      // Save these results in an object that we'll push into the results array we defined earlier
+      results.push({
+        title: title,
+        link: link
+      });
     });
-    //res.json(collections);
-    // Log the results once you've looped through each of the elements found with cheerio
-    //console.log(results);
-    res.json(results)
+  });
+  //res.json(collections);
+  // Log the results once you've looped through each of the elements found with cheerio
+  //console.log(results);
+  res.send("Scrape Complete");
 });
 //res.json(collections);
 
@@ -91,6 +120,6 @@ app.get("/scrape", (req, res) => {
 
 
 // Syncing our database and logging a message to the user upon success
-  app.listen(PORT, function () {
-    console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
-  });
+app.listen(PORT, function () {
+  console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
+});
