@@ -43,8 +43,6 @@ app.get("/", (req, res) => {
   db.Article.find({}).then(data => {
     res.render("index", {
       article: data
-    }).catch(err => {
-      res.json(err)
     })
   })
 })
